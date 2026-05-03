@@ -2,47 +2,213 @@
 
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Mon Système" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Mon Système"/>
   <title>Mon Système</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: linear-gradient(160deg, #FDF6EC 0%, #F0F4FF 100%); font-family: 'DM Sans', -apple-system, sans-serif; min-height: 100vh; }
-    input:focus { outline: none; }
-    .task-row { transition: all 0.35s cubic-bezier(.4,0,.2,1); }
-    .task-row.removing { opacity: 0; transform: translateX(60px) scale(0.95); }
-    .fade-in { animation: fadeUp .4s ease both; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-    .pill-btn { transition: all .15s ease; cursor: pointer; }
-    .pill-btn:active { transform: scale(0.95); }
-    .check-circle { transition: all .2s ease; }
-    .check-circle:active { transform: scale(1.2); }
-    button { font-family: 'DM Sans', -apple-system, sans-serif; }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:linear-gradient(160deg,#FDF6EC 0%,#F0F4FF 100%);font-family:'DM Sans',-apple-system,sans-serif;min-height:100vh;padding-bottom:80px;}
+    input:focus{outline:none;}
+    button{font-family:'DM Sans',-apple-system,sans-serif;cursor:pointer;}
+
+```
+/* HEADER */
+#header{padding:52px 20px 16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:10;}
+#header-top{display:flex;justify-content:space-between;align-items:flex-start;}
+#week-label{font-size:11px;font-weight:500;color:#94A3B8;letter-spacing:1px;text-transform:uppercase;}
+h1{font-size:26px;font-weight:700;color:#1E293B;font-family:'DM Serif Display',serif;margin-top:4px;}
+#week-btn{background:#F1F5F9;color:#475569;border:none;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:600;}
+#week-btn.full{background:#1E293B;color:#fff;}
+.alert{margin-top:12px;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:500;}
+.alert.sunday{background:#FEF3C7;color:#92400E;}
+.alert.friday{background:#ECFDF5;color:#065F46;}
+
+/* CONTENT */
+#content{padding:20px 16px;max-width:480px;margin:0 auto;}
+
+/* CARDS */
+.card{background:white;border-radius:18px;margin-bottom:14px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+.card-header{padding:14px 16px 10px;display:flex;align-items:center;gap:8px;}
+.card-title{font-weight:700;font-size:15px;color:#1E293B;}
+.badge{border-radius:10px;padding:2px 8px;font-size:12px;font-weight:700;}
+.empty{padding:12px 16px;font-size:13px;color:#CBD5E1;font-style:italic;}
+
+/* TASK ROW */
+.task-row{display:flex;align-items:center;gap:8px;padding:11px 16px;transition:all 0.35s cubic-bezier(.4,0,.2,1);}
+.task-row.removing{opacity:0;transform:translateX(60px) scale(0.95);}
+.task-text{flex:1;font-size:14px;color:#334155;line-height:1.4;}
+.task-text.done-text{color:#94A3B8;text-decoration:line-through;}
+.check-btn{width:26px;height:26px;border-radius:50%;border-width:2px;border-style:solid;background:white;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;}
+.icon-btn{background:none;border:none;font-size:15px;padding:4px;opacity:0.35;}
+.icon-btn.active{opacity:1;}
+.del-btn{background:none;border:none;font-size:18px;padding:4px;opacity:0.2;}
+
+/* ADD FORM */
+#add-card{background:white;border-radius:18px;padding:16px;margin-bottom:20px;box-shadow:0 2px 20px rgba(0,0,0,0.06);}
+#add-label{font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+#bac-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.bac-pill{padding:6px 12px;border-radius:20px;border-width:1.5px;border-style:solid;font-size:12px;font-weight:600;}
+#input-row{display:flex;gap:8px;}
+#task-input{flex:1;padding:12px 14px;border-radius:12px;border:1.5px solid #E2E8F0;font-size:14px;color:#334155;background:#F8FAFC;font-family:'DM Sans',sans-serif;}
+#add-btn{padding:12px 18px;border-radius:12px;border:none;color:white;font-size:18px;font-weight:700;}
+
+/* DONE SECTION */
+#done-toggle{width:100%;padding:14px 16px;background:none;border:none;display:flex;justify-content:space-between;align-items:center;}
+#clear-done{font-size:12px;color:#EF4444;background:none;border:none;font-weight:600;padding:10px 16px;}
+
+/* PRIORITIES */
+#priorities-card{background:white;border-radius:18px;padding:16px;margin-bottom:20px;box-shadow:0 2px 20px rgba(0,0,0,0.06);display:none;}
+#prio-label{font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;}
+.prio-row{display:flex;align-items:center;gap:10px;padding:8px 0;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:50;display:none;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal-box{width:100%;max-width:480px;margin:0 auto;background:white;border-radius:24px 24px 0 0;padding:24px 20px 40px;}
+.modal-handle{width:40px;height:4px;background:#E2E8F0;border-radius:2px;margin:0 auto 20px;}
+.modal-title{font-size:20px;font-weight:700;color:#1E293B;font-family:'DM Serif Display',serif;margin-bottom:6px;}
+.modal-sub{font-size:13px;color:#64748B;margin-bottom:20px;}
+.modal-section{background:#F8FAFC;border-radius:14px;padding:14px;}
+.modal-section-label{font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.modal-empty{font-size:13px;color:#CBD5E1;font-style:italic;}
+.modal-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F1F5F9;}
+.modal-close-btn{width:100%;margin-top:16px;padding:14px;border-radius:14px;border:none;background:#1E293B;color:white;font-size:15px;font-weight:600;}
+.modal-cancel-btn{flex:1;padding:14px;border-radius:14px;border:1.5px solid #E2E8F0;background:white;color:#64748B;font-size:15px;font-weight:600;}
+.modal-save-btn{flex:2;padding:14px;border-radius:14px;border:none;background:#1E293B;color:white;font-size:15px;font-weight:600;}
+.edit-label{font-size:12px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.edit-input{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #E2E8F0;font-size:14px;color:#334155;background:#F8FAFC;font-family:'DM Sans',sans-serif;margin-bottom:16px;}
+.edit-btn-row{display:flex;gap:10px;}
+
+/* TOAST */
+#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1E293B;color:white;padding:12px 20px;border-radius:20px;font-size:14px;font-weight:500;z-index:100;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,0.2);display:none;}
+```
+
   </style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
 
-```
-const BAC_CONFIG = {
-  boulot:      { label: "Boulot",                emoji: "🏢", color: "#2563EB", bg: "#EFF6FF", border: "#BFDBFE" },
-  competences: { label: "Montée en compétences", emoji: "📚", color: "#7C3AED", bg: "#F5F3FF", border: "#DDD6FE" },
-  maison:      { label: "Maison & Projets",      emoji: "🏠", color: "#059669", bg: "#ECFDF5", border: "#A7F3D0" },
-  vitefait:    { label: "Vite fait",             emoji: "⚡", color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
+<!-- HEADER -->
+
+<div id="header">
+  <div id="header-top">
+    <div>
+      <p id="week-label"></p>
+      <h1>Mon Système</h1>
+    </div>
+    <button id="week-btn" onclick="openWeekModal()">🎯 0/3</button>
+  </div>
+  <div id="day-alert"></div>
+</div>
+
+<!-- CONTENT -->
+
+<div id="content">
+  <!-- Priorités semaine -->
+  <div id="priorities-card" class="card">
+    <p id="prio-label">🎯 Priorités de la semaine</p>
+    <div id="priorities-list"></div>
+  </div>
+
+  <!-- Ajout tâche -->
+
+  <div id="add-card">
+    <p id="add-label">+ Ajouter une tâche</p>
+    <div id="bac-selector"></div>
+    <div id="input-row">
+      <input id="task-input" type="text" placeholder="Quelle est la prochaine action concrète ?" onkeydown="if(event.key==='Enter') addTask()"/>
+      <button id="add-btn" onclick="addTask()">+</button>
+    </div>
+  </div>
+
+  <!-- Bacs -->
+
+  <div id="bacs-container"></div>
+
+  <!-- Fait -->
+
+  <div class="card" id="done-card">
+    <button id="done-toggle" onclick="toggleDone()">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:20px">✅</span>
+        <span style="font-weight:700;font-size:15px;color:#1E293B;">Fait cette semaine</span>
+        <span id="done-badge" class="badge" style="display:none;background:#F0FDF4;color:#16A34A;"></span>
+      </div>
+      <span id="done-arrow" style="color:#94A3B8;font-size:18px;">▼</span>
+    </button>
+    <div id="done-list" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- MODAL SEMAINE -->
+
+<div class="modal-overlay" id="week-modal" onclick="closeWeekModal(event)">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">🎯 Priorités de la semaine</h2>
+    <p class="modal-sub">Max 3 tâches. Tape 🎯 sur une tâche pour l'épingler.</p>
+    <div class="modal-section">
+      <p class="modal-section-label" id="prio-count-label">Épinglées (0/3)</p>
+      <div id="modal-prio-list"></div>
+    </div>
+    <button class="modal-close-btn" onclick="document.getElementById('week-modal').classList.remove('open')">C'est bon pour cette semaine 🚀</button>
+  </div>
+</div>
+
+<!-- MODAL EDITION -->
+
+<div class="modal-overlay" id="edit-modal" onclick="closeEditModal(event)">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <h2 class="modal-title">✏️ Modifier la tâche</h2>
+    <p class="edit-label">Nom de la tâche</p>
+    <input class="edit-input" id="edit-input" type="text"/>
+    <p class="edit-label">Déplacer vers</p>
+    <div id="edit-bac-selector" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;"></div>
+    <div class="edit-btn-row">
+      <button class="modal-cancel-btn" onclick="document.getElementById('edit-modal').classList.remove('open')">Annuler</button>
+      <button class="modal-save-btn" onclick="saveEdit()">Enregistrer ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+<script>
+const BACS = {
+  boulot:      { label:"Boulot",                emoji:"🏢", color:"#2563EB", bg:"#EFF6FF", border:"#BFDBFE" },
+  competences: { label:"Montée en compétences", emoji:"📚", color:"#7C3AED", bg:"#F5F3FF", border:"#DDD6FE" },
+  maison:      { label:"Maison & Projets",      emoji:"🏠", color:"#059669", bg:"#ECFDF5", border:"#A7F3D0" },
+  vitefait:    { label:"Vite fait",             emoji:"⚡", color:"#D97706", bg:"#FFFBEB", border:"#FDE68A" },
 };
 
-const STORAGE_KEY = "mon-systeme-v1";
-let idCounter = Date.now();
-function uid() { return ++idCounter + Math.random().toString(36).slice(2); }
+const KEY = "mon-systeme-v1";
+let state = { tasks:{boulot:[],competences:[],maison:[],vitefait:[]}, done:[], weekTasks:[] };
+let activeBac = "boulot";
+let editId = null;
+let editOrigBac = null;
+let editBac = "boulot";
+let showDone = false;
+
+function loadState() {
+  try { const r = localStorage.getItem(KEY); if(r) state = JSON.parse(r); } catch(_) {}
+}
+function saveState() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(_) {}
+}
+function uid() { return Date.now() + Math.random().toString(36).slice(2); }
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
 
 function getWeekLabel() {
   const now = new Date();
@@ -50,312 +216,315 @@ function getWeekLabel() {
   start.setDate(now.getDate() - now.getDay() + 1);
   const end = new Date(start);
   end.setDate(start.getDate() + 6);
-  const fmt = d => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+  const fmt = d => d.toLocaleDateString("fr-FR", {day:"numeric", month:"short"});
   return `Semaine du ${fmt(start)} au ${fmt(end)}`;
 }
 
-function getDayLabel() {
-  const d = new Date().getDay();
-  if (d === 0) return "sunday";
-  if (d === 5) return "friday";
-  return null;
+function initHeader() {
+  document.getElementById("week-label").textContent = getWeekLabel();
+  const day = new Date().getDay();
+  const alertEl = document.getElementById("day-alert");
+  if (day === 0) {
+    alertEl.innerHTML = `<div class="alert sunday">🌅 Dimanche soir — 20 min pour planifier ta semaine. Choisis 3 tâches →</div>`;
+  } else if (day === 5) {
+    alertEl.innerHTML = `<div class="alert friday">✨ Vendredi midi — 10 min pour clôturer ta semaine.</div>`;
+  }
 }
 
-function load() {
-  try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch(_) {}
-  return null;
+function renderBacSelector() {
+  const el = document.getElementById("bac-selector");
+  el.innerHTML = "";
+  Object.entries(BACS).forEach(([key, cfg]) => {
+    const btn = document.createElement("button");
+    btn.className = "bac-pill";
+    btn.textContent = cfg.emoji + " " + cfg.label;
+    btn.style.borderColor = activeBac===key ? cfg.color : "#E2E8F0";
+    btn.style.background = activeBac===key ? cfg.bg : "white";
+    btn.style.color = activeBac===key ? cfg.color : "#64748B";
+    btn.onclick = () => { activeBac = key; renderBacSelector(); updateAddBtn(); };
+    el.appendChild(btn);
+  });
 }
-function save(data) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(_) {}
+
+function updateAddBtn() {
+  const btn = document.getElementById("add-btn");
+  btn.style.background = BACS[activeBac].color;
 }
 
-const defaultTasks = { boulot: [], competences: [], maison: [], vitefait: [] };
+function addTask() {
+  const input = document.getElementById("task-input");
+  const text = input.value.trim();
+  if (!text) return;
+  const task = { id: uid(), text, bac: activeBac, createdAt: Date.now() };
+  state.tasks[activeBac].push(task);
+  saveState();
+  input.value = "";
+  render();
+  showToast("Tâche ajoutée ✓");
+}
 
-function App() {
-  const saved = load();
-  const [tasks,     setTasks]     = useState(saved?.tasks     || defaultTasks);
-  const [done,      setDone]      = useState(saved?.done      || []);
-  const [weekTasks, setWeekTasks] = useState(saved?.weekTasks || []);
-  const [input,     setInput]     = useState("");
-  const [activeBac, setActiveBac] = useState("boulot");
-  const [showDone,  setShowDone]  = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [toast,     setToast]     = useState(null);
-  const [removing,  setRemoving]  = useState({});
-  const [editTask,  setEditTask]  = useState(null);
-  const [editText,  setEditText]  = useState("");
-  const [editBac,   setEditBac]   = useState("boulot");
-  const inputRef = useRef();
+function completeTask(id, bac) {
+  const idx = state.tasks[bac].findIndex(t => t.id === id);
+  if (idx === -1) return;
+  const task = state.tasks[bac].splice(idx, 1)[0];
+  state.weekTasks = state.weekTasks.filter(x => x !== id);
+  state.done.unshift({ ...task, doneAt: Date.now() });
+  saveState();
+  render();
+  showToast("Bravo ! ✅ Déplacé dans « Fait »");
+}
 
-  useEffect(() => { save({ tasks, done, weekTasks }); }, [tasks, done, weekTasks]);
+function undoTask(id) {
+  const idx = state.done.findIndex(t => t.id === id);
+  if (idx === -1) return;
+  const task = state.done.splice(idx, 1)[0];
+  const { doneAt, ...restored } = task;
+  state.tasks[restored.bac].unshift(restored);
+  saveState();
+  render();
+  showToast("↩️ Tâche remise dans " + BACS[restored.bac].label);
+}
 
-  function showToast(msg) {
-    setToast(msg);
-    setTimeout(() => setToast(null), 2500);
+function deleteTask(id, bac) {
+  state.tasks[bac] = state.tasks[bac].filter(t => t.id !== id);
+  state.weekTasks = state.weekTasks.filter(x => x !== id);
+  saveState();
+  render();
+}
+
+function toggleWeek(id) {
+  if (state.weekTasks.includes(id)) {
+    state.weekTasks = state.weekTasks.filter(x => x !== id);
+  } else if (state.weekTasks.length < 3) {
+    state.weekTasks.push(id);
+  } else {
+    showToast("Max 3 priorités !"); return;
   }
+  saveState();
+  render();
+}
 
-  function addTask() {
-    if (!input.trim()) return;
-    const task = { id: uid(), text: input.trim(), bac: activeBac, createdAt: Date.now() };
-    setTasks(t => ({ ...t, [activeBac]: [...t[activeBac], task] }));
-    setInput("");
-    inputRef.current?.focus();
-    showToast("Tâche ajoutée ✓");
-  }
+function openEdit(id, bac) {
+  const task = state.tasks[bac].find(t => t.id === id);
+  if (!task) return;
+  editId = id;
+  editOrigBac = bac;
+  editBac = bac;
+  document.getElementById("edit-input").value = task.text;
+  renderEditBacSelector();
+  document.getElementById("edit-modal").classList.add("open");
+}
 
-  function completeTask(task) {
-    setRemoving(r => ({ ...r, [task.id]: true }));
-    setTimeout(() => {
-      setTasks(t => ({ ...t, [task.bac]: t[task.bac].filter(x => x.id !== task.id) }));
-      setWeekTasks(w => w.filter(id => id !== task.id));
-      setDone(d => [{ ...task, doneAt: Date.now() }, ...d]);
-      setRemoving(r => { const n = { ...r }; delete n[task.id]; return n; });
-      showToast("Bravo ! ✅ Déplacé dans « Fait »");
-    }, 400);
-  }
+function renderEditBacSelector() {
+  const el = document.getElementById("edit-bac-selector");
+  el.innerHTML = "";
+  Object.entries(BACS).forEach(([key, cfg]) => {
+    const btn = document.createElement("button");
+    btn.className = "bac-pill";
+    btn.textContent = cfg.emoji + " " + cfg.label;
+    btn.style.borderColor = editBac===key ? cfg.color : "#E2E8F0";
+    btn.style.background = editBac===key ? cfg.bg : "white";
+    btn.style.color = editBac===key ? cfg.color : "#64748B";
+    btn.onclick = () => { editBac = key; renderEditBacSelector(); };
+    el.appendChild(btn);
+  });
+}
 
-  function undoTask(task) {
-    setDone(d => d.filter(x => x.id !== task.id));
-    const { doneAt, ...restored } = task;
-    setTasks(t => ({ ...t, [restored.bac]: [restored, ...t[restored.bac]] }));
-    showToast("↩️ Tâche remise dans " + BAC_CONFIG[restored.bac].label);
-  }
+function saveEdit() {
+  const text = document.getElementById("edit-input").value.trim();
+  if (!text || !editId) return;
+  const idx = state.tasks[editOrigBac].findIndex(t => t.id === editId);
+  if (idx === -1) return;
+  const task = state.tasks[editOrigBac].splice(idx, 1)[0];
+  task.text = text;
+  task.bac = editBac;
+  state.tasks[editBac].unshift(task);
+  saveState();
+  document.getElementById("edit-modal").classList.remove("open");
+  render();
+  showToast("✏️ Tâche modifiée !");
+}
 
-  function deleteTask(task) {
-    setRemoving(r => ({ ...r, [task.id]: true }));
-    setTimeout(() => {
-      setTasks(t => ({ ...t, [task.bac]: t[task.bac].filter(x => x.id !== task.id) }));
-      setWeekTasks(w => w.filter(id => id !== task.id));
-      setRemoving(r => { const n = { ...r }; delete n[task.id]; return n; });
-    }, 400);
-  }
+function closeEditModal(e) {
+  if (e.target.id === "edit-modal") document.getElementById("edit-modal").classList.remove("open");
+}
 
-  function openEdit(task) {
-    setEditTask(task);
-    setEditText(task.text);
-    setEditBac(task.bac);
-  }
+function openWeekModal() {
+  renderWeekModal();
+  document.getElementById("week-modal").classList.add("open");
+}
 
-  function saveEdit() {
-    if (!editText.trim()) return;
-    const updated = { ...editTask, text: editText.trim(), bac: editBac };
-    setTasks(t => {
-      const n = { ...t };
-      n[editTask.bac] = n[editTask.bac].filter(x => x.id !== editTask.id);
-      n[editBac] = [updated, ...n[editBac].filter(x => x.id !== editTask.id)];
-      return n;
+function closeWeekModal(e) {
+  if (e.target.id === "week-modal") document.getElementById("week-modal").classList.remove("open");
+}
+
+function renderWeekModal() {
+  const allTasks = Object.values(state.tasks).flat();
+  const pinned = allTasks.filter(t => state.weekTasks.includes(t.id));
+  const el = document.getElementById("modal-prio-list");
+  document.getElementById("prio-count-label").textContent = `Épinglées (${pinned.length}/3)`;
+  el.innerHTML = "";
+  if (pinned.length === 0) {
+    el.innerHTML = `<p class="modal-empty">Tape 🎯 sur une tâche pour l'épingler ici</p>`;
+  } else {
+    pinned.forEach(task => {
+      const row = document.createElement("div");
+      row.className = "modal-row";
+      row.innerHTML = `<span>${BACS[task.bac].emoji}</span><span style="flex:1;font-size:14px;color:#334155;">${task.text}</span>`;
+      const del = document.createElement("button");
+      del.textContent = "×";
+      del.style.cssText = "background:none;border:none;font-size:16px;color:#EF4444;cursor:pointer;";
+      del.onclick = () => { toggleWeek(task.id); renderWeekModal(); };
+      row.appendChild(del);
+      el.appendChild(row);
     });
-    setEditTask(null);
-    showToast("✏️ Tâche modifiée !");
   }
-
-  function toggleWeek(id) {
-    setWeekTasks(w =>
-      w.includes(id) ? w.filter(x => x !== id)
-      : w.length < 3 ? [...w, id]
-      : (showToast("Max 3 priorités !"), w)
-    );
-  }
-
-  const allTasks     = Object.values(tasks).flat();
-  const weekSelected = allTasks.filter(t => weekTasks.includes(t.id));
-  const dayAlert     = getDayLabel();
-
-  return (
-    <div style={{ minHeight:"100vh", paddingBottom:80 }}>
-
-      {/* HEADER */}
-      <div style={{ padding:"52px 20px 16px", background:"rgba(255,255,255,0.75)", backdropFilter:"blur(20px)", borderBottom:"1px solid rgba(0,0,0,0.06)", position:"sticky", top:0, zIndex:10 }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-          <div>
-            <p style={{ fontSize:11, fontWeight:500, color:"#94A3B8", letterSpacing:1, textTransform:"uppercase" }}>{getWeekLabel()}</p>
-            <h1 style={{ fontSize:26, fontWeight:700, color:"#1E293B", fontFamily:"'DM Serif Display', serif", marginTop:4 }}>Mon Système</h1>
-          </div>
-          <button className="pill-btn" onClick={() => setShowModal(true)}
-            style={{ background:weekSelected.length===3?"#1E293B":"#F1F5F9", color:weekSelected.length===3?"#fff":"#475569", border:"none", borderRadius:20, padding:"8px 14px", fontSize:13, fontWeight:600 }}>
-            🎯 {weekSelected.length}/3
-          </button>
-        </div>
-        {dayAlert==="sunday" && <div style={{ marginTop:12, background:"#FEF3C7", borderRadius:12, padding:"10px 14px", fontSize:13, color:"#92400E", fontWeight:500 }}>🌅 Dimanche soir — 20 min pour planifier ta semaine. Choisis 3 tâches →</div>}
-        {dayAlert==="friday" && <div style={{ marginTop:12, background:"#ECFDF5", borderRadius:12, padding:"10px 14px", fontSize:13, color:"#065F46", fontWeight:500 }}>✨ Vendredi midi — 10 min pour clôturer ta semaine.</div>}
-      </div>
-
-      <div style={{ padding:"20px 16px", maxWidth:480, margin:"0 auto" }}>
-
-        {/* PRIORITES SEMAINE */}
-        {weekSelected.length > 0 && (
-          <div className="fade-in" style={{ marginBottom:20, background:"white", borderRadius:18, padding:16, boxShadow:"0 2px 20px rgba(0,0,0,0.06)" }}>
-            <p style={{ fontSize:11, fontWeight:600, color:"#64748B", textTransform:"uppercase", letterSpacing:0.8, marginBottom:12 }}>🎯 Priorités de la semaine</p>
-            {weekSelected.map((task, i) => (
-              <div key={task.id} className={`task-row ${removing[task.id]?"removing":""}`}
-                style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 0", borderBottom:i<weekSelected.length-1?"1px solid #F1F5F9":"none" }}>
-                <button className="check-circle" onClick={() => completeTask(task)}
-                  style={{ width:24, height:24, borderRadius:"50%", border:`2px solid ${BAC_CONFIG[task.bac].color}`, background:"white", cursor:"pointer", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                  <span style={{ fontSize:10 }}>{BAC_CONFIG[task.bac].emoji}</span>
-                </button>
-                <span style={{ fontSize:14, color:"#334155", flex:1 }}>{task.text}</span>
-                <span style={{ fontSize:11, color:BAC_CONFIG[task.bac].color, fontWeight:600 }}>{BAC_CONFIG[task.bac].label}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* AJOUT TACHE */}
-        <div style={{ background:"white", borderRadius:18, padding:16, marginBottom:20, boxShadow:"0 2px 20px rgba(0,0,0,0.06)" }}>
-          <p style={{ fontSize:11, fontWeight:600, color:"#64748B", textTransform:"uppercase", letterSpacing:0.8, marginBottom:10 }}>+ Ajouter une tâche</p>
-          <div style={{ display:"flex", gap:8, marginBottom:10, flexWrap:"wrap" }}>
-            {Object.entries(BAC_CONFIG).map(([key, cfg]) => (
-              <button key={key} className="pill-btn" onClick={() => setActiveBac(key)}
-                style={{ padding:"6px 12px", borderRadius:20, border:`1.5px solid ${activeBac===key?cfg.color:"#E2E8F0"}`, background:activeBac===key?cfg.bg:"white", color:activeBac===key?cfg.color:"#64748B", fontSize:12, fontWeight:600 }}>
-                {cfg.emoji} {cfg.label}
-              </button>
-            ))}
-          </div>
-          <div style={{ display:"flex", gap:8 }}>
-            <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key==="Enter" && addTask()}
-              placeholder="Quelle est la prochaine action concrète ?"
-              style={{ flex:1, padding:"12px 14px", borderRadius:12, border:"1.5px solid #E2E8F0", fontSize:14, color:"#334155", background:"#F8FAFC" }} />
-            <button className="pill-btn" onClick={addTask}
-              style={{ padding:"12px 18px", borderRadius:12, border:"none", background:BAC_CONFIG[activeBac].color, color:"white", fontSize:18, fontWeight:700 }}>+</button>
-          </div>
-        </div>
-
-        {/* BACS */}
-        {Object.entries(BAC_CONFIG).map(([key, cfg]) => (
-          <div key={key} className="fade-in" style={{ background:"white", borderRadius:18, marginBottom:14, overflow:"hidden", boxShadow:"0 2px 20px rgba(0,0,0,0.05)" }}>
-            <div style={{ padding:"14px 16px 10px", borderBottom:tasks[key].length?`1px solid ${cfg.border}`:"none", display:"flex", alignItems:"center", gap:8 }}>
-              <span style={{ fontSize:20 }}>{cfg.emoji}</span>
-              <span style={{ fontWeight:700, fontSize:15, color:"#1E293B" }}>{cfg.label}</span>
-              {tasks[key].length > 0 && <span style={{ background:cfg.bg, color:cfg.color, borderRadius:10, padding:"2px 8px", fontSize:12, fontWeight:700 }}>{tasks[key].length}</span>}
-            </div>
-            {tasks[key].length === 0 ? (
-              <div style={{ padding:"12px 16px", fontSize:13, color:"#CBD5E1", fontStyle:"italic" }}>Aucune tâche — tu es à jour 👌</div>
-            ) : tasks[key].map((task, i) => (
-              <div key={task.id} className={`task-row ${removing[task.id]?"removing":""}`}
-                style={{ display:"flex", alignItems:"center", gap:8, padding:"11px 16px", borderBottom:i<tasks[key].length-1?`1px solid ${cfg.border}`:"none", background:weekTasks.includes(task.id)?cfg.bg:"white" }}>
-                <button className="check-circle" onClick={() => completeTask(task)}
-                  style={{ width:26, height:26, borderRadius:"50%", border:`2px solid ${cfg.color}`, background:"white", cursor:"pointer", flexShrink:0 }}>
-                  <span style={{ fontSize:10, color:cfg.color }}>✓</span>
-                </button>
-                <span style={{ flex:1, fontSize:14, color:"#334155", lineHeight:1.4 }}>{task.text}</span>
-                <button onClick={() => openEdit(task)}
-                  style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, opacity:0.45, padding:4 }} title="Modifier">✏️</button>
-                <button className="check-circle" onClick={() => toggleWeek(task.id)}
-                  style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, opacity:weekTasks.includes(task.id)?1:0.3, padding:4 }}>🎯</button>
-                <button onClick={() => deleteTask(task)}
-                  style={{ background:"none", border:"none", cursor:"pointer", fontSize:18, opacity:0.2, padding:4 }}>×</button>
-              </div>
-            ))}
-          </div>
-        ))}
-
-        {/* FAIT */}
-        <div style={{ background:"white", borderRadius:18, overflow:"hidden", boxShadow:"0 2px 20px rgba(0,0,0,0.05)" }}>
-          <button className="pill-btn" onClick={() => setShowDone(s => !s)}
-            style={{ width:"100%", padding:"14px 16px", background:"none", border:"none", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-              <span style={{ fontSize:20 }}>✅</span>
-              <span style={{ fontWeight:700, fontSize:15, color:"#1E293B" }}>Fait cette semaine</span>
-              {done.length > 0 && <span style={{ background:"#F0FDF4", color:"#16A34A", borderRadius:10, padding:"2px 8px", fontSize:12, fontWeight:700 }}>{done.length}</span>}
-            </div>
-            <span style={{ color:"#94A3B8", fontSize:18 }}>{showDone?"▲":"▼"}</span>
-          </button>
-          {showDone && (
-            <div>
-              {done.length===0 ? (
-                <div style={{ padding:"12px 16px", fontSize:13, color:"#CBD5E1", fontStyle:"italic" }}>Coche une tâche pour la voir ici !</div>
-              ) : done.map(task => (
-                <div key={task.id} style={{ display:"flex", alignItems:"center", gap:8, padding:"11px 16px", borderTop:"1px solid #F0FDF4" }}>
-                  <span style={{ fontSize:16 }}>✅</span>
-                  <span style={{ flex:1, fontSize:14, color:"#94A3B8", textDecoration:"line-through" }}>{task.text}</span>
-                  <button onClick={() => undoTask(task)} title="Validée par erreur ? Annuler"
-                    style={{ background:"none", border:"none", cursor:"pointer", fontSize:16, padding:4 }}>↩️</button>
-                  <span style={{ fontSize:11, color:BAC_CONFIG[task.bac].color, fontWeight:600 }}>{BAC_CONFIG[task.bac].emoji}</span>
-                </div>
-              ))}
-              {done.length > 0 && (
-                <div style={{ padding:"10px 16px", borderTop:"1px solid #F0FDF4" }}>
-                  <button className="pill-btn" onClick={() => { setDone([]); showToast("Historique effacé"); }}
-                    style={{ fontSize:12, color:"#EF4444", background:"none", border:"none", fontWeight:600 }}>🗑 Effacer l'historique</button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* MODAL EDITION */}
-      {editTask && (
-        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.4)", zIndex:50, display:"flex", alignItems:"flex-end" }} onClick={() => setEditTask(null)}>
-          <div style={{ width:"100%", maxWidth:480, margin:"0 auto", background:"white", borderRadius:"24px 24px 0 0", padding:"24px 20px 40px" }} onClick={e => e.stopPropagation()}>
-            <div style={{ width:40, height:4, background:"#E2E8F0", borderRadius:2, margin:"0 auto 20px" }} />
-            <h2 style={{ fontSize:20, fontWeight:700, color:"#1E293B", fontFamily:"'DM Serif Display', serif", marginBottom:16 }}>✏️ Modifier la tâche</h2>
-            <p style={{ fontSize:12, fontWeight:600, color:"#64748B", textTransform:"uppercase", letterSpacing:0.8, marginBottom:8 }}>Nom de la tâche</p>
-            <input value={editText} onChange={e => setEditText(e.target.value)}
-              style={{ width:"100%", padding:"12px 14px", borderRadius:12, border:"1.5px solid #E2E8F0", fontSize:14, color:"#334155", background:"#F8FAFC", marginBottom:16 }} />
-            <p style={{ fontSize:12, fontWeight:600, color:"#64748B", textTransform:"uppercase", letterSpacing:0.8, marginBottom:8 }}>Déplacer vers</p>
-            <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:20 }}>
-              {Object.entries(BAC_CONFIG).map(([key, cfg]) => (
-                <button key={key} className="pill-btn" onClick={() => setEditBac(key)}
-                  style={{ padding:"7px 13px", borderRadius:20, border:`1.5px solid ${editBac===key?cfg.color:"#E2E8F0"}`, background:editBac===key?cfg.bg:"white", color:editBac===key?cfg.color:"#64748B", fontSize:12, fontWeight:600 }}>
-                  {cfg.emoji} {cfg.label}
-                </button>
-              ))}
-            </div>
-            <div style={{ display:"flex", gap:10 }}>
-              <button className="pill-btn" onClick={() => setEditTask(null)}
-                style={{ flex:1, padding:14, borderRadius:14, border:"1.5px solid #E2E8F0", background:"white", color:"#64748B", fontSize:15, fontWeight:600 }}>
-                Annuler
-              </button>
-              <button className="pill-btn" onClick={saveEdit}
-                style={{ flex:2, padding:14, borderRadius:14, border:"none", background:"#1E293B", color:"white", fontSize:15, fontWeight:600 }}>
-                Enregistrer ✓
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL SEMAINE */}
-      {showModal && (
-        <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.4)", zIndex:50, display:"flex", alignItems:"flex-end" }} onClick={() => setShowModal(false)}>
-          <div style={{ width:"100%", maxWidth:480, margin:"0 auto", background:"white", borderRadius:"24px 24px 0 0", padding:"24px 20px 40px" }} onClick={e => e.stopPropagation()}>
-            <div style={{ width:40, height:4, background:"#E2E8F0", borderRadius:2, margin:"0 auto 20px" }} />
-            <h2 style={{ fontSize:20, fontWeight:700, color:"#1E293B", fontFamily:"'DM Serif Display', serif", marginBottom:6 }}>🎯 Priorités de la semaine</h2>
-            <p style={{ fontSize:13, color:"#64748B", marginBottom:20 }}>Max 3 tâches. Tape 🎯 sur une tâche pour l'épingler.</p>
-            <div style={{ background:"#F8FAFC", borderRadius:14, padding:14 }}>
-              <p style={{ fontSize:11, fontWeight:600, color:"#64748B", textTransform:"uppercase", letterSpacing:0.8, marginBottom:8 }}>Épinglées ({weekSelected.length}/3)</p>
-              {weekSelected.length===0 ? (
-                <p style={{ fontSize:13, color:"#CBD5E1", fontStyle:"italic" }}>Tape 🎯 sur une tâche pour l'épingler ici</p>
-              ) : weekSelected.map(task => (
-                <div key={task.id} style={{ display:"flex", alignItems:"center", gap:8, padding:"8px 0", borderBottom:"1px solid #F1F5F9" }}>
-                  <span>{BAC_CONFIG[task.bac].emoji}</span>
-                  <span style={{ flex:1, fontSize:14, color:"#334155" }}>{task.text}</span>
-                  <button onClick={() => toggleWeek(task.id)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:16, color:"#EF4444" }}>×</button>
-                </div>
-              ))}
-            </div>
-            <button className="pill-btn" onClick={() => setShowModal(false)}
-              style={{ width:"100%", marginTop:16, padding:14, borderRadius:14, border:"none", background:"#1E293B", color:"white", fontSize:15, fontWeight:600 }}>
-              C'est bon pour cette semaine 🚀
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* TOAST */}
-      {toast && (
-        <div style={{ position:"fixed", bottom:30, left:"50%", transform:"translateX(-50%)", background:"#1E293B", color:"white", padding:"12px 20px", borderRadius:20, fontSize:14, fontWeight:500, zIndex:100, whiteSpace:"nowrap", boxShadow:"0 8px 30px rgba(0,0,0,0.2)" }}>
-          {toast}
-        </div>
-      )}
-    </div>
-  );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
-```
+function toggleDone() {
+  showDone = !showDone;
+  document.getElementById("done-list").style.display = showDone ? "block" : "none";
+  document.getElementById("done-arrow").textContent = showDone ? "▲" : "▼";
+}
 
-  </script>
+function render() {
+  renderPriorities();
+  renderBacs();
+  renderDone();
+  renderWeekBtn();
+}
+
+function renderWeekBtn() {
+  const btn = document.getElementById("week-btn");
+  const count = state.weekTasks.length;
+  btn.textContent = `🎯 ${count}/3`;
+  btn.className = count === 3 ? "full" : "";
+}
+
+function renderPriorities() {
+  const allTasks = Object.values(state.tasks).flat();
+  const pinned = allTasks.filter(t => state.weekTasks.includes(t.id));
+  const card = document.getElementById("priorities-card");
+  const list = document.getElementById("priorities-list");
+  card.style.display = pinned.length > 0 ? "block" : "none";
+  list.innerHTML = "";
+  pinned.forEach((task, i) => {
+    const cfg = BACS[task.bac];
+    const row = document.createElement("div");
+    row.className = "prio-row";
+    row.style.borderBottom = i < pinned.length-1 ? "1px solid #F1F5F9" : "none";
+    row.innerHTML = `
+      <button class="check-btn" style="border-color:${cfg.color};" onclick="completeTask('${task.id}','${task.bac}')">
+        <span>${cfg.emoji}</span>
+      </button>
+      <span style="flex:1;font-size:14px;color:#334155;">${task.text}</span>
+      <span style="font-size:11px;color:${cfg.color};font-weight:600;">${cfg.label}</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function renderBacs() {
+  const container = document.getElementById("bacs-container");
+  container.innerHTML = "";
+  Object.entries(BACS).forEach(([key, cfg]) => {
+    const tasks = state.tasks[key];
+    const div = document.createElement("div");
+    div.className = "card";
+    // Header
+    const hdr = document.createElement("div");
+    hdr.className = "card-header";
+    hdr.style.borderBottom = tasks.length ? `1px solid ${cfg.border}` : "none";
+    hdr.innerHTML = `<span style="font-size:20px">${cfg.emoji}</span><span class="card-title">${cfg.label}</span>`;
+    if (tasks.length > 0) {
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.style.background = cfg.bg;
+      badge.style.color = cfg.color;
+      badge.textContent = tasks.length;
+      hdr.appendChild(badge);
+    }
+    div.appendChild(hdr);
+    // Tasks
+    if (tasks.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "Aucune tâche — tu es à jour 👌";
+      div.appendChild(empty);
+    } else {
+      tasks.forEach((task, i) => {
+        const pinned = state.weekTasks.includes(task.id);
+        const row = document.createElement("div");
+        row.className = "task-row";
+        row.style.borderBottom = i < tasks.length-1 ? `1px solid ${cfg.border}` : "none";
+        row.style.background = pinned ? cfg.bg : "white";
+        row.innerHTML = `
+          <button class="check-btn" style="border-color:${cfg.color};" onclick="completeTask('${task.id}','${key}')">
+            <span style="color:${cfg.color}">✓</span>
+          </button>
+          <span class="task-text">${task.text}</span>
+          <button class="icon-btn" onclick="openEdit('${task.id}','${key}')" title="Modifier">✏️</button>
+          <button class="icon-btn ${pinned?'active':''}" onclick="toggleWeek('${task.id}')" title="Épingler">🎯</button>
+          <button class="del-btn" onclick="deleteTask('${task.id}','${key}')">×</button>
+        `;
+        div.appendChild(row);
+      });
+    }
+    container.appendChild(div);
+  });
+}
+
+function renderDone() {
+  const list = document.getElementById("done-list");
+  const badge = document.getElementById("done-badge");
+  const count = state.done.length;
+  if (count > 0) {
+    badge.style.display = "inline-block";
+    badge.textContent = count;
+  } else {
+    badge.style.display = "none";
+  }
+  list.innerHTML = "";
+  if (count === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Coche une tâche pour la voir ici !";
+    list.appendChild(empty);
+  } else {
+    state.done.forEach(task => {
+      const cfg = BACS[task.bac];
+      const row = document.createElement("div");
+      row.className = "task-row";
+      row.style.borderTop = "1px solid #F0FDF4";
+      row.innerHTML = `
+        <span style="font-size:16px">✅</span>
+        <span class="task-text done-text">${task.text}</span>
+        <button class="icon-btn active" onclick="undoTask('${task.id}')" title="Annuler par erreur">↩️</button>
+        <span style="font-size:11px;color:${cfg.color};font-weight:600;">${cfg.emoji}</span>
+      `;
+      list.appendChild(row);
+    });
+    const clearRow = document.createElement("div");
+    clearRow.style.borderTop = "1px solid #F0FDF4";
+    clearRow.innerHTML = `<button id="clear-done" onclick="clearDone()">🗑 Effacer l'historique</button>`;
+    list.appendChild(clearRow);
+  }
+}
+
+function clearDone() {
+  state.done = [];
+  saveState();
+  render();
+  showToast("Historique effacé");
+}
+
+// INIT
+loadState();
+initHeader();
+renderBacSelector();
+updateAddBtn();
+render();
+</script>
+
 </body>
 </html>
